@@ -13,7 +13,6 @@
  * mlkem-native
  */
 
-#include "mlkem/cbd.c"
 #include "mlkem/compress.c"
 #include "mlkem/debug.c"
 #include "mlkem/fips202/fips202.c"
@@ -21,7 +20,6 @@
 #include "mlkem/fips202/keccakf1600.c"
 #include "mlkem/indcpa.c"
 #include "mlkem/kem.c"
-#include "mlkem/ntt.c"
 #include "mlkem/poly.c"
 #include "mlkem/poly_k.c"
 #include "mlkem/sampling.c"
@@ -720,16 +718,6 @@
 #undef MLKEM_NATIVE_ARITH_IMPL_H
 #endif
 
-/* mlkem/cbd.c */
-#if defined(load24_littleendian)
-#undef load24_littleendian
-#endif
-
-/* mlkem/cbd.c */
-#if defined(load32_littleendian)
-#undef load32_littleendian
-#endif
-
 /* mlkem/cbmc.h */
 #if defined(CBMC_CONCAT)
 #undef CBMC_CONCAT
@@ -1235,21 +1223,6 @@
 #undef KeccakF1600x4_StateXORBytes
 #endif
 
-/* mlkem/ntt.c */
-#if defined(invntt_layer)
-#undef invntt_layer
-#endif
-
-/* mlkem/ntt.c */
-#if defined(ntt_butterfly_block)
-#undef ntt_butterfly_block
-#endif
-
-/* mlkem/ntt.c */
-#if defined(ntt_layer)
-#undef ntt_layer
-#endif
-
 /* mlkem/poly.c */
 #if defined(barrett_reduce)
 #undef barrett_reduce
@@ -1378,11 +1351,6 @@
 /* mlkem/sampling.c */
 #if defined(MLKEM_GEN_MATRIX_NBLOCKS)
 #undef MLKEM_GEN_MATRIX_NBLOCKS
-#endif
-
-/* mlkem/sampling.c */
-#if defined(empty_cu_sampling)
-#undef empty_cu_sampling
 #endif
 
 /* mlkem/sampling.c */
