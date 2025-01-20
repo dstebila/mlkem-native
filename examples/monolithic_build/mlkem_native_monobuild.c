@@ -13,6 +13,7 @@
  * mlkem-native
  */
 
+#include "mlkem/cbd.c"
 #include "mlkem/compress.c"
 #include "mlkem/debug.c"
 #include "mlkem/fips202/fips202.c"
@@ -20,6 +21,7 @@
 #include "mlkem/fips202/keccakf1600.c"
 #include "mlkem/indcpa.c"
 #include "mlkem/kem.c"
+#include "mlkem/ntt.c"
 #include "mlkem/poly.c"
 #include "mlkem/poly_k.c"
 #include "mlkem/sampling.c"
@@ -34,11 +36,6 @@
 /* mlkem/common.h */
 #if defined(MLKEM_ASM_NAMESPACE)
 #undef MLKEM_ASM_NAMESPACE
-#endif
-
-/* mlkem/common.h */
-#if defined(MLKEM_ASM_NAMESPACE_K)
-#undef MLKEM_ASM_NAMESPACE_K
 #endif
 
 /* mlkem/common.h */
@@ -59,6 +56,11 @@
 /* mlkem/common.h */
 #if defined(MLKEM_NATIVE_COMMON_H)
 #undef MLKEM_NATIVE_COMMON_H
+#endif
+
+/* mlkem/common.h */
+#if defined(MLKEM_NATIVE_EMPTY_CU)
+#undef MLKEM_NATIVE_EMPTY_CU
 #endif
 
 /* mlkem/common.h */
@@ -718,6 +720,16 @@
 #undef MLKEM_NATIVE_ARITH_IMPL_H
 #endif
 
+/* mlkem/cbd.c */
+#if defined(load24_littleendian)
+#undef load24_littleendian
+#endif
+
+/* mlkem/cbd.c */
+#if defined(load32_littleendian)
+#undef load32_littleendian
+#endif
+
 /* mlkem/cbmc.h */
 #if defined(CBMC_CONCAT)
 #undef CBMC_CONCAT
@@ -963,11 +975,6 @@
 #undef MLKEM_NATIVE_DEBUG_ERROR_HEADER
 #endif
 
-/* mlkem/debug.c */
-#if defined(empty_cu_debug)
-#undef empty_cu_debug
-#endif
-
 /* mlkem/debug.h */
 #if defined(MLKEM_DEBUG_H)
 #undef MLKEM_DEBUG_H
@@ -1006,11 +1013,6 @@
 /* mlkem/debug.h */
 #if defined(mlkem_debug_check_bounds)
 #undef mlkem_debug_check_bounds
-#endif
-
-/* mlkem/fips202/fips202.c */
-#if defined(empty_cu_fips202)
-#undef empty_cu_fips202
 #endif
 
 /* mlkem/fips202/fips202.c */
@@ -1119,11 +1121,6 @@
 #endif
 
 /* mlkem/fips202/fips202x4.c */
-#if defined(empty_cu_fips202x4)
-#undef empty_cu_fips202x4
-#endif
-
-/* mlkem/fips202/fips202x4.c */
 #if defined(keccak_absorb_once_x4)
 #undef keccak_absorb_once_x4
 #endif
@@ -1198,11 +1195,6 @@
 #undef ROL
 #endif
 
-/* mlkem/fips202/keccakf1600.c */
-#if defined(empty_cu_keccakf1600)
-#undef empty_cu_keccakf1600
-#endif
-
 /* mlkem/fips202/keccakf1600.h */
 #if defined(KECCAKF1600_H)
 #undef KECCAKF1600_H
@@ -1243,6 +1235,21 @@
 #undef KeccakF1600x4_StateXORBytes
 #endif
 
+/* mlkem/ntt.c */
+#if defined(invntt_layer)
+#undef invntt_layer
+#endif
+
+/* mlkem/ntt.c */
+#if defined(ntt_butterfly_block)
+#undef ntt_butterfly_block
+#endif
+
+/* mlkem/ntt.c */
+#if defined(ntt_layer)
+#undef ntt_layer
+#endif
+
 /* mlkem/poly.c */
 #if defined(barrett_reduce)
 #undef barrett_reduce
@@ -1256,11 +1263,6 @@
 /* mlkem/poly.c */
 #if defined(cast_uint16_to_int16)
 #undef cast_uint16_to_int16
-#endif
-
-/* mlkem/poly.c */
-#if defined(empty_cu_poly)
-#undef empty_cu_poly
 #endif
 
 /* mlkem/poly.c */
@@ -1588,11 +1590,6 @@
 #undef asm
 #endif
 
-/* mlkem/verify.c */
-#if defined(empty_cu_verify)
-#undef empty_cu_verify
-#endif
-
 /* mlkem/verify.h */
 #if defined(MLKEM_USE_ASM_VALUE_BARRIER)
 #undef MLKEM_USE_ASM_VALUE_BARRIER
@@ -1656,11 +1653,6 @@
 /* mlkem/verify.h */
 #if defined(value_barrier_u8)
 #undef value_barrier_u8
-#endif
-
-/* mlkem/zetas.c */
-#if defined(empty_cu_zetas)
-#undef empty_cu_zetas
 #endif
 
 #endif /* MLKEM_NATIVE_MONOBUILD_KEEP_SHARED_HEADERS */
