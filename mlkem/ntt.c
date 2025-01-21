@@ -104,10 +104,8 @@ __contract__(
   ensures(array_abs_bound(r, 0, MLKEM_N, (layer + 1) * MLKEM_Q)))
 {
   unsigned start, k;
-  /* `layer` is a ghost variable only needed in the CBMC specification */
-  ((void)layer);
-  /* Twiddle factors for layer n start at index 2^(layer-1) */
-  k = MLKEM_N / (2 * len);
+  /* Twiddle factors for layer n are at indices 2^(n-1)..2^n-1. */
+  k = 1u << (layer - 1);
   for (start = 0; start < MLKEM_N; start += 2 * len)
   __loop__(
     invariant(start < MLKEM_N + 2 * len)
@@ -172,9 +170,9 @@ __contract__(
   ensures(array_abs_bound(r, 0, MLKEM_N, MLKEM_Q)))
 {
   unsigned start, k;
-  /* `layer` is a ghost variable used only in the specification */
-  ((void)layer);
-  k = MLKEM_N / len - 1;
+  /* Twiddle factors for layer n are at indices 2^(n-1)..2^n-1.
+   * The inverse NTT uses them in backwards order. */
+  k = (1u << layer) - 1;
   for (start = 0; start < MLKEM_N; start += 2 * len)
   __loop__(
     invariant(array_abs_bound(r, 0, MLKEM_N, MLKEM_Q))
