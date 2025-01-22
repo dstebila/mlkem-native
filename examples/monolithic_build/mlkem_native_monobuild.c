@@ -1229,6 +1229,41 @@
 #endif
 
 /* mlkem/poly.c */
+#if defined(MONT_F)
+#undef MONT_F
+#endif
+
+/* mlkem/poly.c */
+#if defined(NTT_BOUND1)
+#undef NTT_BOUND1
+#endif
+
+/* mlkem/poly.c */
+#if defined(NTT_BOUND2)
+#undef NTT_BOUND2
+#endif
+
+/* mlkem/poly.c */
+#if defined(NTT_BOUND4)
+#undef NTT_BOUND4
+#endif
+
+/* mlkem/poly.c */
+#if defined(NTT_BOUND6)
+#undef NTT_BOUND6
+#endif
+
+/* mlkem/poly.c */
+#if defined(NTT_BOUND7)
+#undef NTT_BOUND7
+#endif
+
+/* mlkem/poly.c */
+#if defined(NTT_BOUND8)
+#undef NTT_BOUND8
+#endif
+
+/* mlkem/poly.c */
 #if defined(barrett_reduce)
 #undef barrett_reduce
 #endif
@@ -1244,13 +1279,48 @@
 #endif
 
 /* mlkem/poly.c */
+#if defined(ct_butterfly)
+#undef ct_butterfly
+#endif
+
+/* mlkem/poly.c */
 #if defined(fqmul)
 #undef fqmul
 #endif
 
 /* mlkem/poly.c */
-#if defined(invntt_layer)
-#undef invntt_layer
+#if defined(gs_butterfly_defer)
+#undef gs_butterfly_defer
+#endif
+
+/* mlkem/poly.c */
+#if defined(gs_butterfly_reduce)
+#undef gs_butterfly_reduce
+#endif
+
+/* mlkem/poly.c */
+#if defined(invntt_layer321)
+#undef invntt_layer321
+#endif
+
+/* mlkem/poly.c */
+#if defined(invntt_layer54)
+#undef invntt_layer54
+#endif
+
+/* mlkem/poly.c */
+#if defined(invntt_layer54_butterfly)
+#undef invntt_layer54_butterfly
+#endif
+
+/* mlkem/poly.c */
+#if defined(invntt_layer6)
+#undef invntt_layer6
+#endif
+
+/* mlkem/poly.c */
+#if defined(invntt_layer7_invert)
+#undef invntt_layer7_invert
 #endif
 
 /* mlkem/poly.c */
@@ -1264,13 +1334,28 @@
 #endif
 
 /* mlkem/poly.c */
-#if defined(ntt_butterfly_block)
-#undef ntt_butterfly_block
+#if defined(ntt_layer123)
+#undef ntt_layer123
 #endif
 
 /* mlkem/poly.c */
-#if defined(ntt_layer)
-#undef ntt_layer
+#if defined(ntt_layer45)
+#undef ntt_layer45
+#endif
+
+/* mlkem/poly.c */
+#if defined(ntt_layer45_butterfly)
+#undef ntt_layer45_butterfly
+#endif
+
+/* mlkem/poly.c */
+#if defined(ntt_layer6)
+#undef ntt_layer6
+#endif
+
+/* mlkem/poly.c */
+#if defined(ntt_layer7)
+#undef ntt_layer7
 #endif
 
 /* mlkem/poly.c */

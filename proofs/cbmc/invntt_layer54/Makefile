@@ -3,11 +3,11 @@
 include ../Makefile_params.common
 
 HARNESS_ENTRY = harness
-HARNESS_FILE = invntt_layer_harness
+HARNESS_FILE = invntt_layer54_harness
 
 # This should be a unique identifier for this proof, and will appear on the
 # Litani dashboard. It can be human-readable and contain spaces if you wish.
-PROOF_UID = invntt_layer
+PROOF_UID = invntt_layer54
 
 DEFINES +=
 INCLUDES +=
@@ -16,10 +16,10 @@ REMOVE_FUNCTION_BODY +=
 UNWINDSET +=
 
 PROOF_SOURCES += $(PROOFDIR)/$(HARNESS_FILE).c
-PROJECT_SOURCES += $(SRCDIR)/mlkem/poly.c $(SRCDIR)/mlkem/zetas.c
+PROJECT_SOURCES += $(SRCDIR)/mlkem/poly.c
 
-CHECK_FUNCTION_CONTRACTS=$(MLKEM_NAMESPACE)invntt_layer
-USE_FUNCTION_CONTRACTS=$(MLKEM_NAMESPACE)fqmul $(MLKEM_NAMESPACE)barrett_reduce
+CHECK_FUNCTION_CONTRACTS=$(MLKEM_NAMESPACE)invntt_layer54
+USE_FUNCTION_CONTRACTS=$(MLKEM_NAMESPACE)invntt_layer54_butterfly
 APPLY_LOOP_CONTRACTS=on
 USE_DYNAMIC_FRAMES=1
 
@@ -27,7 +27,7 @@ USE_DYNAMIC_FRAMES=1
 EXTERNAL_SAT_SOLVER=
 CBMCFLAGS=--smt2
 
-FUNCTION_NAME = invntt_layer
+FUNCTION_NAME = $(MLKEM_NAMESPACE)invntt_layer54
 
 # If this proof is found to consume huge amounts of RAM, you can set the
 # EXPENSIVE variable. With new enough versions of the proof tools, this will
