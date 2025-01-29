@@ -129,10 +129,9 @@ int crypto_kem_enc_derand(uint8_t ct[MLKEM_INDCCA_CIPHERTEXTBYTES],
                           const uint8_t pk[MLKEM_INDCCA_PUBLICKEYBYTES],
                           const uint8_t coins[MLKEM_SYMBYTES])
 {
-  ALIGN uint8_t buf[2 * MLKEM_SYMBYTES];
+  ALIGN uint8_t buf[2 * MLKEM_SYMBYTES + MLKEM_INDCPA_CODEBYTES];
   /* Will contain key, coins */
-  ALIGN uint8_t kr[2 * MLKEM_SYMBYTES];
-  uint8_t buf2[2 * MLKEM_SYMBYTES + MLKEM_INDCPA_CODEBYTES];
+  ALIGN uint8_t r[MLKEM_SYMBYTES];
   uint8_t cd[MLKEM_INDCPA_CODEBYTES];
 
   if (check_pk(pk))
@@ -144,14 +143,13 @@ int crypto_kem_enc_derand(uint8_t ct[MLKEM_INDCCA_CIPHERTEXTBYTES],
 
   /* Multitarget countermeasure for coins + contributory KEM */
   hash_h(buf + MLKEM_SYMBYTES, pk, MLKEM_INDCCA_PUBLICKEYBYTES);
-  hash_g(kr, buf, 2 * MLKEM_SYMBYTES);
+  hash_h(r, buf, 2 * MLKEM_SYMBYTES);
 
   /* coins are in kr+MLKEM_SYMBYTES */
-  indcpa_enc(ct, cd, buf, pk, kr + MLKEM_SYMBYTES);
+  indcpa_enc(ct, cd, buf, pk, r);
 
-  memcpy(buf2, buf, 2 * MLKEM_SYMBYTES);
-  memcpy(&buf2[2 * MLKEM_SYMBYTES], cd, MLKEM_INDCPA_CODEBYTES);
-  hash_g(ss, buf2, 2 * MLKEM_SYMBYTES + MLKEM_INDCPA_CODEBYTES);
+  memcpy(&buf[2 * MLKEM_SYMBYTES], cd, MLKEM_INDCPA_CODEBYTES);
+  hash_h(ss, buf, 2 * MLKEM_SYMBYTES + MLKEM_INDCPA_CODEBYTES);
   return 0;
 }
 
@@ -169,12 +167,11 @@ int crypto_kem_dec(uint8_t ss[MLKEM_SSBYTES],
                    const uint8_t sk[MLKEM_INDCCA_SECRETKEYBYTES])
 {
   uint8_t fail;
-  ALIGN uint8_t buf[2 * MLKEM_SYMBYTES];
+  ALIGN uint8_t buf[2 * MLKEM_SYMBYTES + MLKEM_INDCPA_CODEBYTES];
   /* Will contain key, coins */
-  ALIGN uint8_t kr[2 * MLKEM_SYMBYTES];
+  ALIGN uint8_t r[MLKEM_SYMBYTES];
   const uint8_t *pk = sk + MLKEM_INDCPA_SECRETKEYBYTES;
   uint8_t k[MLKEM_SYMBYTES];
-  uint8_t buf2[2 * MLKEM_SYMBYTES + MLKEM_INDCPA_CODEBYTES];
   uint8_t cd[MLKEM_INDCPA_CODEBYTES];
 
   if (check_sk(sk))
@@ -187,20 +184,19 @@ int crypto_kem_dec(uint8_t ss[MLKEM_SSBYTES],
   /* Multitarget countermeasure for coins + contributory KEM */
   memcpy(buf + MLKEM_SYMBYTES,
          sk + MLKEM_INDCCA_SECRETKEYBYTES - 2 * MLKEM_SYMBYTES, MLKEM_SYMBYTES);
-  hash_g(kr, buf, 2 * MLKEM_SYMBYTES);
+  hash_h(r, buf, 2 * MLKEM_SYMBYTES);
 
   /* Recompute and compare ciphertext */
   {
     /* Temporary buffer */
     ALIGN uint8_t cmp[MLKEM_INDCCA_CIPHERTEXTBYTES];
     /* coins are in kr+MLKEM_SYMBYTES */
-    indcpa_enc(cmp, cd, buf, pk, kr + MLKEM_SYMBYTES);
+    indcpa_enc(cmp, cd, buf, pk, r);
     fail = ct_memcmp(ct, cmp, MLKEM_INDCCA_CIPHERTEXTBYTES);
   }
 
-  memcpy(buf2, buf, 2 * MLKEM_SYMBYTES);
-  memcpy(&buf2[2 * MLKEM_SYMBYTES], cd, MLKEM_INDCPA_CODEBYTES);
-  hash_g(k, buf2, 2 * MLKEM_SYMBYTES + MLKEM_INDCPA_CODEBYTES);
+  memcpy(&buf[2 * MLKEM_SYMBYTES], cd, MLKEM_INDCPA_CODEBYTES);
+  hash_h(k, buf, 2 * MLKEM_SYMBYTES + MLKEM_INDCPA_CODEBYTES);
 
   /* Compute rejection key */
   {
