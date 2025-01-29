@@ -78,6 +78,7 @@ __contract__(
  **************************************************/
 MLKEM_NATIVE_INTERNAL_API
 void indcpa_enc(uint8_t c[MLKEM_INDCPA_BYTES],
+                uint8_t cd[MLKEM_INDCPA_CODEBYTES],
                 const uint8_t m[MLKEM_INDCPA_MSGBYTES],
                 const uint8_t pk[MLKEM_INDCPA_PUBLICKEYBYTES],
                 const uint8_t coins[MLKEM_SYMBYTES])

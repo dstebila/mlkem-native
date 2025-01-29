@@ -359,6 +359,7 @@ void indcpa_keypair_derand(uint8_t pk[MLKEM_INDCPA_PUBLICKEYBYTES],
 
 MLKEM_NATIVE_INTERNAL_API
 void indcpa_enc(uint8_t c[MLKEM_INDCPA_BYTES],
+                uint8_t cd[MLKEM_INDCPA_CODEBYTES],
                 const uint8_t m[MLKEM_INDCPA_MSGBYTES],
                 const uint8_t pk[MLKEM_INDCPA_PUBLICKEYBYTES],
                 const uint8_t coins[MLKEM_SYMBYTES])
@@ -423,6 +424,8 @@ void indcpa_enc(uint8_t c[MLKEM_INDCPA_BYTES],
   poly_reduce(&v);
 
   pack_ciphertext(c, &b, &v);
+  polyvec_tobytes(cd, &ep);
+  poly_tobytes(&cd[MLKEM_POLYVECBYTES], &epp);
 }
 
 MLKEM_NATIVE_INTERNAL_API
