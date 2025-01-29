@@ -132,8 +132,9 @@ int crypto_kem_enc_derand(uint8_t ct[MLKEM_INDCCA_CIPHERTEXTBYTES],
   ALIGN uint8_t buf[2 * MLKEM_SYMBYTES];
   /* Will contain key, coins */
   ALIGN uint8_t kr[2 * MLKEM_SYMBYTES];
-  uint8_t buf2[2 * MLKEM_SYMBYTES + MLKEM_INDCPA_CODEBYTES];
+  uint8_t buf2[2 * MLKEM_SYMBYTES + MLKEM_INDCPA_CODEPARTIALBYTES];
   uint8_t cd[MLKEM_INDCPA_CODEBYTES];
+  uint8_t cd_partial[MLKEM_INDCPA_CODEPARTIALBYTES];
 
   if (check_pk(pk))
   {
@@ -150,8 +151,11 @@ int crypto_kem_enc_derand(uint8_t ct[MLKEM_INDCCA_CIPHERTEXTBYTES],
   indcpa_enc(ct, cd, buf, pk, kr + MLKEM_SYMBYTES);
 
   memcpy(buf2, buf, 2 * MLKEM_SYMBYTES);
-  memcpy(&buf2[2 * MLKEM_SYMBYTES], cd, MLKEM_INDCPA_CODEBYTES);
-  hash_g(ss, buf2, 2 * MLKEM_SYMBYTES + MLKEM_INDCPA_CODEBYTES);
+  for (size_t i = 0; i < MLKEM_INDCPA_CODEPARTIALBYTES; i++) {
+    cd_partial[i] = cd[i * (MLKEM_INDCPA_CODEBYTES / MLKEM_INDCPA_CODEPARTIALBYTES)];
+  }
+  memcpy(&buf2[2 * MLKEM_SYMBYTES], cd_partial, MLKEM_INDCPA_CODEPARTIALBYTES);
+  hash_g(ss, buf2, 2 * MLKEM_SYMBYTES + MLKEM_INDCPA_CODEPARTIALBYTES);
   return 0;
 }
 
@@ -174,8 +178,9 @@ int crypto_kem_dec(uint8_t ss[MLKEM_SSBYTES],
   ALIGN uint8_t kr[2 * MLKEM_SYMBYTES];
   const uint8_t *pk = sk + MLKEM_INDCPA_SECRETKEYBYTES;
   uint8_t k[MLKEM_SYMBYTES];
-  uint8_t buf2[2 * MLKEM_SYMBYTES + MLKEM_INDCPA_CODEBYTES];
+  uint8_t buf2[2 * MLKEM_SYMBYTES + MLKEM_INDCPA_CODEPARTIALBYTES];
   uint8_t cd[MLKEM_INDCPA_CODEBYTES];
+  uint8_t cd_partial[MLKEM_INDCPA_CODEPARTIALBYTES];
 
   if (check_sk(sk))
   {
@@ -199,8 +204,11 @@ int crypto_kem_dec(uint8_t ss[MLKEM_SSBYTES],
   }
 
   memcpy(buf2, buf, 2 * MLKEM_SYMBYTES);
-  memcpy(&buf2[2 * MLKEM_SYMBYTES], cd, MLKEM_INDCPA_CODEBYTES);
-  hash_g(k, buf2, 2 * MLKEM_SYMBYTES + MLKEM_INDCPA_CODEBYTES);
+  for (size_t i = 0; i < MLKEM_INDCPA_CODEPARTIALBYTES; i++) {
+    cd_partial[i] = cd[i * (MLKEM_INDCPA_CODEBYTES / MLKEM_INDCPA_CODEPARTIALBYTES)];
+  }
+  memcpy(&buf2[2 * MLKEM_SYMBYTES], cd_partial, MLKEM_INDCPA_CODEPARTIALBYTES);
+  hash_g(k, buf2, 2 * MLKEM_SYMBYTES + MLKEM_INDCPA_CODEPARTIALBYTES);
 
   /* Compute rejection key */
   {
