@@ -14,8 +14,11 @@
 #include "../../../common.h"
 
 #if defined(MLKEM_NATIVE_ARITH_BACKEND_X86_64_DEFAULT)
-#include "consts.h"
+/* simpasm: header-end */
+/* Don't remove this marker, it is needed by `scripts/simpasm`
+ * to preserve the header/footer upon assembly simplification. */
 
+#include "consts.h"
 #include "fq.inc"
 
 .text
@@ -70,5 +73,7 @@ add		$256,%rdi
 call		reduce128_avx2
 ret
 
-
+/* Don't remove this marker, it is needed by `scripts/simpasm`
+ * to preserve the header/footer upon assembly simplification. */
+/* simpasm: footer-start */
 #endif /* MLKEM_NATIVE_ARITH_BACKEND_X86_64_DEFAULT */

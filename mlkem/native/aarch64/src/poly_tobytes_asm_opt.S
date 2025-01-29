@@ -5,6 +5,9 @@
 
 #include "../../../common.h"
 #if defined(MLKEM_NATIVE_ARITH_BACKEND_AARCH64_OPT)
+/* simpasm: header-end */
+/* Don't remove this marker, it is needed by `scripts/simpasm`
+ * to preserve the header/footer upon assembly simplification. */
 
 /********************************************
  *             poly_tobytes()               *
@@ -56,4 +59,7 @@ poly_tobytes_asm_opt_asm_loop_start:
         .unreq src
         .unreq count
 
+/* Don't remove this marker, it is needed by `scripts/simpasm`
+ * to preserve the header/footer upon assembly simplification. */
+/* simpasm: footer-start */
 #endif /* MLKEM_NATIVE_ARITH_BACKEND_AARCH64_OPT */

@@ -26,6 +26,9 @@
 
 #include "../../../common.h"
 #if defined(MLKEM_NATIVE_ARITH_BACKEND_AARCH64_OPT)
+/* simpasm: header-end */
+/* Don't remove this marker, it is needed by `scripts/simpasm`
+ * to preserve the header/footer upon assembly simplification. */
 
 // Bounds:
 // If C is chosen so that |src| < q * C, then |dst| < q * (0.0508 * C + 1/2)
@@ -952,4 +955,7 @@ ntt_opt_loop1:
     .unreq t2
     .unreq t3
 
+/* Don't remove this marker, it is needed by `scripts/simpasm`
+ * to preserve the header/footer upon assembly simplification. */
+/* simpasm: footer-start */
 #endif /* MLKEM_NATIVE_ARITH_BACKEND_AARCH64_OPT */

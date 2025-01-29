@@ -8,6 +8,9 @@
 
 #include "../../../common.h"
 #if defined(MLKEM_NATIVE_ARITH_BACKEND_X86_64_DEFAULT)
+/* simpasm: header-end */
+/* Don't remove this marker, it is needed by `scripts/simpasm`
+ * to preserve the header/footer upon assembly simplification. */
 
 #include "consts.h"
 #include "shuffle.inc"
@@ -216,4 +219,7 @@ levels1t6	1
 
 ret
 
+/* Don't remove this marker, it is needed by `scripts/simpasm`
+ * to preserve the header/footer upon assembly simplification. */
+/* simpasm: footer-start */
 #endif /* MLKEM_NATIVE_ARITH_BACKEND_X86_64_DEFAULT */

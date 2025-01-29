@@ -5,6 +5,9 @@
 
 #include "../../../common.h"
 #if defined(MLKEM_NATIVE_ARITH_BACKEND_AARCH64_OPT)
+/* simpasm: header-end */
+/* Don't remove this marker, it is needed by `scripts/simpasm`
+ * to preserve the header/footer upon assembly simplification. */
 
 /* Barrett reduction */
 .macro barrett_reduce a
@@ -251,4 +254,7 @@ poly_reduce_asm_opt_loop:
         .unreq modulus
         .unreq modulus_twisted
 
+/* Don't remove this marker, it is needed by `scripts/simpasm`
+ * to preserve the header/footer upon assembly simplification. */
+/* simpasm: footer-start */
 #endif /* MLKEM_NATIVE_ARITH_BACKEND_AARCH64_OPT */

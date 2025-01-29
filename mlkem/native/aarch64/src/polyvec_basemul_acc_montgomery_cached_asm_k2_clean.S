@@ -11,6 +11,9 @@
 
 #include "../../../common.h"
 #if defined(MLKEM_NATIVE_ARITH_BACKEND_AARCH64_CLEAN) && MLKEM_K == 2
+/* simpasm: header-end */
+/* Don't remove this marker, it is needed by `scripts/simpasm`
+ * to preserve the header/footer upon assembly simplification. */
 
 // Input:
 // - Vectors al, ah of 32-bit entries
@@ -208,4 +211,7 @@ k2_loop_start:
     .unreq out1
     .unreq t0
 
+/* Don't remove this marker, it is needed by `scripts/simpasm`
+ * to preserve the header/footer upon assembly simplification. */
+/* simpasm: footer-start */
 #endif /* MLKEM_NATIVE_ARITH_BACKEND_AARCH64_CLEAN && MLKEM_K == 2 */
