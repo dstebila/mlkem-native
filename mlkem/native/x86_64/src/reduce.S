@@ -22,6 +22,17 @@
 #include "fq.inc"
 
 .text
+
+.global MLKEM_ASM_NAMESPACE(reduce_avx2)
+MLKEM_ASM_NAMESPACE(reduce_avx2):
+#consts
+vmovdqa		AVX2_BACKEND_DATA_OFFSET_16XQ*2(%rsi),%ymm0
+vmovdqa		AVX2_BACKEND_DATA_OFFSET_16XV*2(%rsi),%ymm1
+call		reduce128_avx2
+add		$256,%rdi
+call		reduce128_avx2
+ret
+
 reduce128_avx2:
 #load
 vmovdqa		(%rdi),%ymm2
@@ -61,16 +72,6 @@ vmovdqa		%ymm7,160(%rdi)
 vmovdqa		%ymm8,192(%rdi)
 vmovdqa		%ymm9,224(%rdi)
 
-ret
-
-.global MLKEM_ASM_NAMESPACE(reduce_avx2)
-MLKEM_ASM_NAMESPACE(reduce_avx2):
-#consts
-vmovdqa		AVX2_BACKEND_DATA_OFFSET_16XQ*2(%rsi),%ymm0
-vmovdqa		AVX2_BACKEND_DATA_OFFSET_16XV*2(%rsi),%ymm1
-call		reduce128_avx2
-add		$256,%rdi
-call		reduce128_avx2
 ret
 
 /* Don't remove this marker, it is needed by `scripts/simpasm`

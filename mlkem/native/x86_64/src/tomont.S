@@ -21,6 +21,17 @@
 #include "consts.h"
 #include "fq.inc"
 
+.global MLKEM_ASM_NAMESPACE(tomont_avx2)
+MLKEM_ASM_NAMESPACE(tomont_avx2):
+#consts
+vmovdqa		AVX2_BACKEND_DATA_OFFSET_16XQ*2(%rsi),%ymm0
+vmovdqa		AVX2_BACKEND_DATA_OFFSET_16XMONTSQLO*2(%rsi),%ymm1
+vmovdqa		AVX2_BACKEND_DATA_OFFSET_16XMONTSQHI*2(%rsi),%ymm2
+call		tomont128_avx2
+add		$256,%rdi
+call		tomont128_avx2
+ret
+
 tomont128_avx2:
 #load
 vmovdqa		(%rdi),%ymm3
@@ -51,17 +62,6 @@ vmovdqa		%ymm8,160(%rdi)
 vmovdqa		%ymm9,192(%rdi)
 vmovdqa		%ymm10,224(%rdi)
 
-ret
-
-.global MLKEM_ASM_NAMESPACE(tomont_avx2)
-MLKEM_ASM_NAMESPACE(tomont_avx2):
-#consts
-vmovdqa		AVX2_BACKEND_DATA_OFFSET_16XQ*2(%rsi),%ymm0
-vmovdqa		AVX2_BACKEND_DATA_OFFSET_16XMONTSQLO*2(%rsi),%ymm1
-vmovdqa		AVX2_BACKEND_DATA_OFFSET_16XMONTSQHI*2(%rsi),%ymm2
-call		tomont128_avx2
-add		$256,%rdi
-call		tomont128_avx2
 ret
 
 /* Don't remove this marker, it is needed by `scripts/simpasm`

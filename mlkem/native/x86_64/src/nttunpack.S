@@ -17,6 +17,14 @@
 #include "fq.inc"
 #include "shuffle.inc"
 
+.global MLKEM_ASM_NAMESPACE(nttunpack_avx2)
+MLKEM_ASM_NAMESPACE(nttunpack_avx2):
+call		nttunpack128_avx2
+add		$256,%rdi
+call		nttunpack128_avx2
+ret
+
+
 nttunpack128_avx2:
 #load
 vmovdqa		(%rdi),%ymm4
@@ -58,13 +66,6 @@ vmovdqa		%ymm3,160(%rdi)
 vmovdqa		%ymm7,192(%rdi)
 vmovdqa		%ymm11,224(%rdi)
 
-ret
-
-.global MLKEM_ASM_NAMESPACE(nttunpack_avx2)
-MLKEM_ASM_NAMESPACE(nttunpack_avx2):
-call		nttunpack128_avx2
-add		$256,%rdi
-call		nttunpack128_avx2
 ret
 
 /* Don't remove this marker, it is needed by `scripts/simpasm`

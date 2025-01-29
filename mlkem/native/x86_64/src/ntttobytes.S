@@ -17,6 +17,17 @@
 #include "fq.inc"
 #include "shuffle.inc"
 
+.global MLKEM_ASM_NAMESPACE(ntttobytes_avx2)
+MLKEM_ASM_NAMESPACE(ntttobytes_avx2):
+#consts
+vmovdqa		AVX2_BACKEND_DATA_OFFSET_16XQ*2(%rdx),%ymm0
+call		ntttobytes128_avx
+add		$256,%rsi
+add		$192,%rdi
+call		ntttobytes128_avx
+ret
+
+
 ntttobytes128_avx:
 #load
 vmovdqa		(%rsi),%ymm5
@@ -75,16 +86,6 @@ vmovdqu		%ymm8,96(%rdi)
 vmovdqu		%ymm3,128(%rdi)
 vmovdqu		%ymm9,160(%rdi)
 
-ret
-
-.global MLKEM_ASM_NAMESPACE(ntttobytes_avx2)
-MLKEM_ASM_NAMESPACE(ntttobytes_avx2):
-#consts
-vmovdqa		AVX2_BACKEND_DATA_OFFSET_16XQ*2(%rdx),%ymm0
-call		ntttobytes128_avx
-add		$256,%rsi
-add		$192,%rdi
-call		ntttobytes128_avx
 ret
 
 /* Don't remove this marker, it is needed by `scripts/simpasm`
