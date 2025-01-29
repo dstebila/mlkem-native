@@ -129,13 +129,11 @@ int crypto_kem_enc_derand(uint8_t ct[MLKEM_INDCCA_CIPHERTEXTBYTES],
                           const uint8_t pk[MLKEM_INDCCA_PUBLICKEYBYTES],
                           const uint8_t coins[MLKEM_SYMBYTES])
 {
-  ALIGN uint8_t buf[2 * MLKEM_SYMBYTES];
+  ALIGN uint8_t buf[2 * MLKEM_SYMBYTES + MLKEM_INDCPA_CODEPARTIALBYTES];
   /* Will contain key, coins */
   ALIGN uint8_t r[MLKEM_SYMBYTES];
   ALIGN uint8_t k[MLKEM_SYMBYTES];
-  uint8_t buf2[2 * MLKEM_SYMBYTES + MLKEM_INDCPA_CODEPARTIALBYTES];
   uint8_t cd[MLKEM_INDCPA_CODEBYTES];
-  uint8_t cd_partial[MLKEM_INDCPA_CODEPARTIALBYTES];
 
   if (check_pk(pk))
   {
@@ -151,12 +149,10 @@ int crypto_kem_enc_derand(uint8_t ct[MLKEM_INDCCA_CIPHERTEXTBYTES],
   /* coins are in kr+MLKEM_SYMBYTES */
   indcpa_enc(ct, cd, buf, pk, r);
 
-  memcpy(buf2, buf, 2 * MLKEM_SYMBYTES);
   for (size_t i = 0; i < MLKEM_INDCPA_CODEPARTIALBYTES; i++) {
-    cd_partial[i] = cd[i * (MLKEM_INDCPA_CODEBYTES / MLKEM_INDCPA_CODEPARTIALBYTES)];
+    buf[2 * MLKEM_SYMBYTES + i] = cd[i * (MLKEM_INDCPA_CODEBYTES / MLKEM_INDCPA_CODEPARTIALBYTES)];
   }
-  memcpy(&buf2[2 * MLKEM_SYMBYTES], cd_partial, MLKEM_INDCPA_CODEPARTIALBYTES);
-  hash_h(k, buf2, 2 * MLKEM_SYMBYTES + MLKEM_INDCPA_CODEPARTIALBYTES);
+  hash_h(k, buf, 2 * MLKEM_SYMBYTES + MLKEM_INDCPA_CODEPARTIALBYTES);
   memcpy(ss, k, MLKEM_SYMBYTES);
   return 0;
 }
@@ -175,14 +171,12 @@ int crypto_kem_dec(uint8_t ss[MLKEM_SSBYTES],
                    const uint8_t sk[MLKEM_INDCCA_SECRETKEYBYTES])
 {
   uint8_t fail;
-  ALIGN uint8_t buf[2 * MLKEM_SYMBYTES];
+  ALIGN uint8_t buf[2 * MLKEM_SYMBYTES + MLKEM_INDCPA_CODEPARTIALBYTES];
   /* Will contain key, coins */
   ALIGN uint8_t r[MLKEM_SYMBYTES];
   const uint8_t *pk = sk + MLKEM_INDCPA_SECRETKEYBYTES;
   uint8_t k[MLKEM_SYMBYTES];
-  uint8_t buf2[2 * MLKEM_SYMBYTES + MLKEM_INDCPA_CODEPARTIALBYTES];
   uint8_t cd[MLKEM_INDCPA_CODEBYTES];
-  uint8_t cd_partial[MLKEM_INDCPA_CODEPARTIALBYTES];
 
   if (check_sk(sk))
   {
@@ -205,12 +199,10 @@ int crypto_kem_dec(uint8_t ss[MLKEM_SSBYTES],
     fail = ct_memcmp(ct, cmp, MLKEM_INDCCA_CIPHERTEXTBYTES);
   }
 
-  memcpy(buf2, buf, 2 * MLKEM_SYMBYTES);
   for (size_t i = 0; i < MLKEM_INDCPA_CODEPARTIALBYTES; i++) {
-    cd_partial[i] = cd[i * (MLKEM_INDCPA_CODEBYTES / MLKEM_INDCPA_CODEPARTIALBYTES)];
+    buf[2 * MLKEM_SYMBYTES + i] = cd[i * (MLKEM_INDCPA_CODEBYTES / MLKEM_INDCPA_CODEPARTIALBYTES)];
   }
-  memcpy(&buf2[2 * MLKEM_SYMBYTES], cd_partial, MLKEM_INDCPA_CODEPARTIALBYTES);
-  hash_h(k, buf2, 2 * MLKEM_SYMBYTES + MLKEM_INDCPA_CODEPARTIALBYTES);
+  hash_h(k, buf, 2 * MLKEM_SYMBYTES + MLKEM_INDCPA_CODEPARTIALBYTES);
 
   /* Compute rejection key */
   {
