@@ -177,9 +177,9 @@ int crypto_kem_dec(uint8_t ss[MLKEM_SSBYTES],
   uint8_t fail;
   ALIGN uint8_t buf[2 * MLKEM_SYMBYTES];
   /* Will contain key, coins */
-  ALIGN uint8_t r[2 * MLKEM_SYMBYTES];
+  ALIGN uint8_t r[MLKEM_SYMBYTES];
   const uint8_t *pk = sk + MLKEM_INDCPA_SECRETKEYBYTES;
-  uint8_t k[2 * MLKEM_SYMBYTES];
+  uint8_t k[MLKEM_SYMBYTES];
   uint8_t buf2[2 * MLKEM_SYMBYTES + MLKEM_INDCPA_CODEPARTIALBYTES];
   uint8_t cd[MLKEM_INDCPA_CODEBYTES];
   uint8_t cd_partial[MLKEM_INDCPA_CODEPARTIALBYTES];
